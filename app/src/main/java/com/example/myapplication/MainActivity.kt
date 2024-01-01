@@ -1,32 +1,24 @@
 package com.example.myapplication
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.example.myapplication.ui.theme.Conversation
+import com.example.myapplication.ui.theme.CustomMessage
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.ui.theme.SampleData
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
@@ -34,45 +26,46 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                   // Greeting("Hello World compose test")
-                    CustomMessage(message =
-                        CustomMessage("moi", "hello composable world"))
-               }
+                    // Greeting("Hello World compose test")
+                    Conversation(SampleData.conversationSample)
+                }
             }
         }
     }
 }
 
-data class CustomMessage(val author: String, val name: String)
 
+@Preview(
+    name = "lightMode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
-fun CustomMessage(message: CustomMessage){
-
-    Row(modifier = Modifier.padding(all = 8.dp)) {
-        Image(painter = painterResource(R.drawable.ic_launcher_background),
-            contentDescription = "Profile pic!",
-            modifier = Modifier
-                // Set image size to 40 dp
-                .size(40.dp)
-                // Clip image to be shaped as a circle
-                .clip(CircleShape)
-        )
-
-        // Add a horizontal space between the image and the column
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Column {
-            Text(message.author)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(message.name)
+fun LightModePreview() {
+    MyApplicationTheme{
+        Surface{
+            CustomMessage(message = CustomMessage("Title", "hello composable world"))
         }
     }
 }
-@Preview(showBackground = true)
+
+@Preview(
+    name = "darkMode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun DefaultPreview() {
-    MyApplicationTheme {
-        //Greeting(name = "First column")
-        CustomMessage(message = CustomMessage("moi", "hello composable world"))
+fun DarkModePreview() {
+    MyApplicationTheme{
+        Surface{
+            CustomMessage(message = CustomMessage("Title", "hello composable world"))
+        }
     }
 }
+
+@Preview
+@Composable
+fun PreviewConversation() {
+    MyApplicationTheme {
+        Conversation(SampleData.conversationSample)
+    }
+}
+
